@@ -34,7 +34,7 @@ export default function Calendar() {
 
   return (
     <div className="min-h-[calc(100svh-133px)] py-8 px-4 ml:pr-8 flex flex-col items-center bg-gradient-to-t from-[#f9fde6] to-white text-black ">
-      {events && events.length > 0 && (
+      {events && events.length > 0 ? (
         <div className="flex flex-col gap-5 mx-5">
           {events.map((event: any, index: number) => {
             return (
@@ -84,6 +84,12 @@ export default function Calendar() {
               </div>
             );
           })}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-5 mx-5">
+          <span className="text-2xl text-center">
+            There are no events scheduled at this time.
+          </span>
         </div>
       )}
       <TicketModal

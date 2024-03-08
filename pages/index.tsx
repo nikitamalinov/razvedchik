@@ -247,23 +247,31 @@ function HomePage() {
                 })}
               </>
             ) : (
-              <div className="relative flex items-center">
-                <Spinner
-                  thickness="4px"
-                  speed=".8s"
-                  emptyColor="gray.200"
-                  color="#336042"
-                  width={{ base: "250px", xs: "300px" }}
-                  height={{ base: "250px", xs: "300px" }}
-                />
-                <div
-                  className="absolute
+              <>
+                {events && events.length === 0 ? (
+                  <div className="">
+                    <span>No events at this time</span>
+                  </div>
+                ) : (
+                  <div className="relative flex items-center">
+                    <Spinner
+                      thickness="4px"
+                      speed=".8s"
+                      emptyColor="gray.200"
+                      color="#336042"
+                      width={{ base: "250px", xs: "300px" }}
+                      height={{ base: "250px", xs: "300px" }}
+                    />
+                    <div
+                      className="absolute
                     w-[116px] h-[116px] ml-[67px]
                     xs:w-[140px] xs:h-[140px] xs:ml-[80px]"
-                >
-                  <Image src="/favicon.png" alt="Logo" fill />
-                </div>
-              </div>
+                    >
+                      <Image src="/favicon.png" alt="Logo" fill />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

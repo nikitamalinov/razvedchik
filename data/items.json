@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Lager Jacket",
+    "price": 29.99,
+    "imgUrl": "/merch/1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Lager T-Shirt",
+    "price": 24.99,
+    "imgUrl": "/merch/2.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Lager T-Shirt",
+    "price": 19.99,
+    "imgUrl": "/merch/2.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Lager T-Shirt",
+    "price": 39.99,
+    "imgUrl": "/merch/2.jpg"
+  }
+]

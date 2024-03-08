@@ -75,16 +75,16 @@ function HomePage() {
 
   return (
     <div className="flex flex-col w-[100vw] text-black">
-      <div className="flex flex-col tw:flex-row items-center justify-center bg-transparent pt-12 pb-16 tw:gap-32 h-[calc(100svh-175px)] ">
-        <div className="flex flex-col items-center justify-center bg-light z-[50] p-5 tw:absolute tw:left-[10%] tw:top-[300px] rounded-lg">
-          <span className="text-5xl five:text-6xl tw:text-7xl font-semibold ">
+      <div className="flex flex-col tw:flex-row items-center justify-center bg-transparent pt-12 pb-16 gap-6 tw:gap-32 h-[calc(100svh-175px)] ">
+        <div className="flex flex-col items-center justify-center bg-light z-[50] p-5 tw:absolute tw:left-[10%] xs:mt-[24px] mt-[0px] tw:top-[300px] rounded-lg">
+          <span className="text-4xl five:text-5xl tw:text-7xl font-semibold ">
             ST. GEORGE
           </span>{" "}
-          <span className="text-5xl five:text-6xl tw:text-7xl mt-5 font-semibold">
+          <span className="text-4xl five:text-5xl tw:text-7xl mt-5 font-semibold">
             PATHFINDERS
           </span>
           <span className="mt-5">LOS ANGELES, CA</span>
-          <div className="flex items-center justify-center mt-12 gap-10 text-xl">
+          <div className="flex items-center justify-center mt-12 gap-8 footerXM:gap-10 text-xl">
             <motion.button
               whileHover={{
                 scale: 1.04,
@@ -97,7 +97,7 @@ function HomePage() {
               onClick={() => {
                 onOpen();
               }}
-              className="text-lg five:text-xl bg-blue hover:bg-blueHover px-5 py-3 rounded-lg font-semibold"
+              className="text-lg five:text-xl bg-blue hover:bg-blueHover px-5 py-3 rounded-lg font-semibold whitespace-nowrap"
             >
               Join Us
             </motion.button>
@@ -110,12 +110,12 @@ function HomePage() {
                 scale: 0.98,
                 transition: { duration: 0.1 },
               }}
-              className="text-lg five:text-xl bg-purple text-white hover:bg-purpleHover px-5 py-3 rounded-lg"
+              className="text-lg five:text-xl bg-purple text-white hover:bg-purpleHover px-5 py-3 rounded-lg  whitespace-nowrap"
             >
               <Link href="/calendar">View Calendar</Link>
             </motion.button>
           </div>
-          <button
+          {/* <button
             className="text-white z-[52]"
             onClick={(e) => {
               setMuteVideo(0);
@@ -123,7 +123,7 @@ function HomePage() {
             }}
           >
             MUTE/UNMUTE
-          </button>
+          </button> */}
         </div>
 
         <div className="absolute top-[173px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-133px)]"></div>
@@ -133,7 +133,7 @@ function HomePage() {
             className="w-[100vw] h-[calc(100svh-133px)]"
           ></iframe>
         </div>
-        <div className="mt-16 flex p-2 bg-black rounded-lg outline-none shadow-lg">
+        <div className="tw:mt-16 flex p-2 bg-black rounded-lg outline-none shadow-lg">
           {/* <YouTube
             className="hidden tw:block"
             videoId="kgOjo6mY0ZY"

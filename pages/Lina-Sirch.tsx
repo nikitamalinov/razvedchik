@@ -43,7 +43,7 @@ export default function LinaSirch() {
             </p>
           </div>
           <a
-            href="https://www.zeffy.com/en-US/donation-form/112a9bb8-4d2d-49d8-b9a6-8e6b922ef998"
+            href="https://razvedchik.square.site/"
             target="_blank"
             className="bg-blue text-white rounded-lg transition-colors duration-200 text-2xl
          py-1 px-3 whitespace-nowrap shadow-md hover:shadow-lg cursor-pointer hover:bg-blueHover mt-8 mb-6"

@@ -41,6 +41,9 @@ export default function Calendar() {
               <div
                 key={index}
                 className="flex flex-col lg:flex-row items-center justify-center gap-4 five:gap-6"
+      ) : (
+        <div className="text-center mt-5">No Events</div>
+      )}
               >
                 <Image
                   src={

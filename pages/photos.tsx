@@ -7,6 +7,8 @@ import YouTube from "react-youtube";
 
 export const getStaticProps = async () => {
   const divArray = Array.from({ length: 33 }, (_, index) => index + 1);
+    // Implementation to query Supabase for folder order
+    // and dynamically generate URL for fetching photos based on the folder order.
 
   return {
     props: {

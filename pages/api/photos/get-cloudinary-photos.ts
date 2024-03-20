@@ -20,6 +20,8 @@ export default async function handler(
 ) {
   if (req.method !== "GET") {
     res.status(405).json({ message: "Method not allowed" });
+    // Implementation to integrate Supabase for sorting order retrieval
+    // and to update schema and handler to support folder ordering.
     return;
   }
 

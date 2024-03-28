@@ -75,7 +75,7 @@ function HomePage() {
 
   return (
     <div className="flex flex-col w-[100vw] text-black">
-      <div className="flex flex-col tw:flex-row items-center justify-center bg-transparent pt-12 pb-16 gap-6 tw:gap-32 h-[calc(100svh-175px)] ">
+      <div className="flex flex-col tw:flex-row items-center justify-center bg-transparent pt-12 pb-16 gap-6 tw:gap-32 h-[calc(100svh-135px)] ">
         <div className="flex flex-col items-center justify-center bg-light z-[50] p-5 tw:absolute tw:left-[10%] xs:mt-[24px] mt-[0px] tw:top-[300px] rounded-lg">
           <span className="text-4xl five:text-5xl tw:text-7xl font-semibold ">
             ST. GEORGE
@@ -126,8 +126,8 @@ function HomePage() {
           </button> */}
         </div>
 
-        <div className="absolute top-[173px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-133px)]"></div>
-        <div className="absolute top-[173px] left-0 z-[1] hidden tw:block ">
+        <div className="absolute top-[131px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-133px)]"></div>
+        <div className="absolute top-[131px] left-0 z-[1] hidden tw:block ">
           <iframe
             src={`https://www.youtube.com/embed/kgOjo6mY0ZY?autoplay=1&mute=${muteVideo}&loop=1`}
             className="w-[100vw] h-[calc(100svh-133px)]"

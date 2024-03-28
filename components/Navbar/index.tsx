@@ -31,20 +31,7 @@ export default function Navbar() {
           </div>
         </Link>
       )}
-      {router.pathname !== "/Lina-Sirch" && (
-        <Link
-          href="/Lina-Sirch"
-          className="bg-blue py-2 w-full text-white flex justify-center hover:bg-blueHover hover:text-white"
-        >
-          <div className="mx-5 text-center">
-            <span className="semi-bold">
-              In loving memory of Lina Sirch, please consider donating to honor
-              their life. &nbsp;
-            </span>
-            <span className="underline">Donate here</span>
-          </div>
-        </Link>
-      )}
+
       {/*<Drawer isOpen={isOpen} onClose={closeCart} size="lg">
         <DrawerOverlay />
         <DrawerContent>

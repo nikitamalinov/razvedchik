@@ -18,16 +18,6 @@ export default function Navbar() {
         </nav>
       </div>
       <hr className="h-[1px] opacity-50 bg-[#C2C2C2] w-full border-0 rounded"></hr>
-      {router.pathname !== "/Lina-Sirch" && router.pathname !== "/camp" && (
-        <Link
-          href="/camp"
-          className="bg-[#ffe320] py-2 w-full text-black flex justify-center hover:bg-yellowHover "
-        >
-          <div className="mx-5 text-center">
-            <span className="semi-bold">
-              Submit your yearly dues by March 31st! &nbsp;
-            </span>
-            <span className="underline">Forms here</span>
           </div>
         </Link>
       )}

@@ -118,6 +118,9 @@ export default function Admin() {
 
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/duaiiecow/image/upload`,
+// Code to list folders and their images
+// Code for new folder creation UI
+// Code for photo upload UI
       {
         method: "POST",
         body: formData,

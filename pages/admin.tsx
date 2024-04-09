@@ -1,4 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { Cloudinary } from "cloudinary-core";
+const cl = new Cloudinary({cloud_name: "YOUR_CLOUD_NAME", secure: true});
+
+export const fetchFoldersAndImages = async () => {
+  try {
+    const folders = await cl.api.sub_folders("main_folder");
+    const images = await folders.map(async (folder) => {
+      const folderImages = await cl.api.resources_by_context("folder_name", folder.name);
+      return { folder: folder.name, images: folderImages.resources };
+    });
+    return Promise.all(images);
+  } catch (error) {
+    console.error("Error fetching folders and images", error);
+  }
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";

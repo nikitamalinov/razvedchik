@@ -18,6 +18,31 @@ export default function Admin() {
   const { data: session, status } = useSession();
   const [isCalendar, setIsCalendar] = useState(true);
   const [buttonOption, setButtonOption] = useState("No Button");
+const fetchFolders = async () => {
+  const res = await fetch(`/api/photos/get-cloudinary-folders`);
+  const data = await res.json();
+  return data;
+};
+
+useEffect(() => {
+  fetchFolders().then(data => {
+    setFolders(data);
+  });
+}, []);
+
+const [folders, setFolders] = useState([]);
+
+{
+  folders.length > 0 && (
+    <div>
+      {folders.map(folder => (
+        <div key={folder.name}>
+          <p>{folder.name}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
   const [email, setEmail] = useState<string | null>(null);
   const [eventName, setEventName] = useState("");

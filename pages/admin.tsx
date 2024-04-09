@@ -1,4 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+
+export default function AdminPage() {
+  const [folders, setFolders] = useState([]);
+
+  useEffect(() => {
+    async function fetchFolders() {
+      const response = await fetch('/api/photos/get-cloudinary-folders');
+      const data = await response.json();
+      setFolders(data);
+    }
+
+    fetchFolders();
+  }, []);
+
+  return (
+    <div>
+      {folders.map(folder => (
+        <div key={folder}>{folder}</div>
+      ))}
+    </div>
+  );
+}
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";

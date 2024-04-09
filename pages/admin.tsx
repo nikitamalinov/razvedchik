@@ -1,3 +1,6 @@
+<PhotoFolderList /> /* Component to list folders and their images */
+<CreateFolderForm /> /* UI Component to create folders */
+<UploadPhotoForm /> /* UI Component to upload photos to a selected folder */
 import React, { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";

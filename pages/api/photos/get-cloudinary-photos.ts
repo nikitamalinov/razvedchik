@@ -14,6 +14,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export async function listFolders() {
+  try {
+    const folders = await cloudinary.api.sub_folders("main_folder_path/");
+    return folders.folders.map(folder => folder.name);
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to list folders");
+  }
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

@@ -53,6 +53,10 @@ export default function Admin() {
     data: eventsToJSON,
     isLoading,
     mutate,
+import CloudinaryManager from '../components/CloudinaryManager';
+
+<CloudinaryManager />
+
   } = useSWR(url, async () => {
     const res = await fetch(url);
     return res.json();

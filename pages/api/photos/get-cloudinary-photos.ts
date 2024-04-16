@@ -8,11 +8,20 @@ const schema = z.object({
 
 import { v2 as cloudinary } from "cloudinary";
 
+import { cloudinary } from '../../../lib/client';
+export default function handler(req, res) {
+  cloudinary.api.resources(function(error, result){
+    res.status(200).json(result);
+  });
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+ },
+ {
+  folder: req.query.folder
+ });
 
 export default async function handler(
   req: NextApiRequest,

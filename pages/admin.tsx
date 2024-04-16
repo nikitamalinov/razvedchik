@@ -1,4 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const AdminPage = () => {
+  const [folders, setFolders] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/cloudinary/folders').then((response) => {
+      setFolders(response.data);
+    }).catch((error) => {
+      console.error('Failed to fetch folders:', error);
+    });
+  }, []);
+
+  return (
+    <div>{folders.map(folder => <div key={folder.name}>{folder.name}</div>)}</div>
+  );
+};
+
+export default AdminPage;
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";

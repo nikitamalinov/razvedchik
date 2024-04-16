@@ -1,4 +1,73 @@
 import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import { getListOfFolders, createNewFolder, uploadPhotoToFolder } from '../services/cloudinaryService';  // Assuming these services are implemented elsewhere
+
+export default function AdminPage() {
+  const [folders, setFolders] = useState([]);
+  const [selectedFolder, setSelectedFolder] = useState('');
+  const [newFolderName, setNewFolderName] = useState('');
+  const [photo, setPhoto] = useState(null);
+
+  useEffect(() => {
+    fetchFolders();
+  }, []);
+
+  const fetchFolders = async () => {
+    const data = await getListOfFolders();
+    setFolders(data.folders);
+  };
+
+  const handleCreateFolder = async () => {
+    await createNewFolder(newFolderName);
+    fetchFolders(); // Refresh the list of folders
+    setNewFolderName(''); // Reset the input field
+  };
+
+  const handlePhotoUpload = async () => {
+    if (!selectedFolder || !photo) return;
+    await uploadPhotoToFolder(selectedFolder, photo);  // Assuming this service handles the API call
+    setPhoto(null); // Reset the photo
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPhoto(reader.result);
+    };
+  };
+
+  return (
+    <div>
+      <h1>Admin Page</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="New folder name"
+          value={newFolderName}
+          onChange={(e) => setNewFolderName(e.target.value)}
+        />
+        <button onClick={handleCreateFolder}>Create Folder</button>
+      </div>
+      <div>
+        <select
+          value={selectedFolder}
+          onChange={(e) => setSelectedFolder(e.target.value)}
+        >
+          <option value="">Select a folder</option>
+          {folders.map((folder) => (
+            <option key={folder} value={folder}>{folder}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handlePhotoUpload}>Upload Photo</button>
+      </div>
+    </div>
+  );
+}
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";

@@ -50,6 +50,24 @@ export default function Admin() {
   }
 
   const {
+import useSWR from 'swr';
+import FolderManagement from '../components/FolderManagement';
+
+export default function Admin() {
+  the data:folders, error } = useSWR('/api/cloudinary/folders', fetcher);
+
+  the fetcher = (url) => fetch(url).then((res) => res.json());
+
+  if (error) return <div>Error loading folders</div>;
+  if (!folders) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <Header title="Admin Dashboard" />
+      <FolderManagement folders={folders} />
+    </div>
+  );
+
     data: eventsToJSON,
     isLoading,
     mutate,

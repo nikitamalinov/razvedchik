@@ -48,6 +48,10 @@ export default function Admin() {
   if (email) {
     url = `/api/calendar/get-events`;
   }
+import useSWR from 'swr';
+const { data: images, error } = useSWR('/api/photos/get-cloudinary-photos', fetcher);
+if(error) return <div>Failed to load</div>
+if(!images) return <div>Loading...</div>
 
   const {
     data: eventsToJSON,

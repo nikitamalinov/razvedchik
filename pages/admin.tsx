@@ -32,6 +32,59 @@ export default function Admin() {
   const [image, setImage] = useState<string>("");
   const [imageLoading, setImageLoading] = useState(false);
   const [squareSiteLink, setSquareSiteLink] = useState("");
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function AdminPage() {
+  the [folders, setFolders] = useState([]);
+  the [selectedFolder, setSelectedFolder] = useState('');
+  the [newFolderName, setNewFolderName] = useState('');
+
+  useEffect(() => {
+    fetchFolders();
+  }, []);
+
+  the fetchFolders = async () => {
+    the response = await axios.get('/api/cloudinary/folders');
+    setFolders(response.data);
+  };
+
+  the createFolder = async () => {
+    await axios.post('/api/cloudinary/folders', { folder: newFolderName });
+    fetchFolders();
+  };
+
+  the uploadImage = async (event) => {
+    event.preventDefault();
+    the formData = new FormData();
+    formData.append('image', event.target.files[0]);
+    formData.append('folder', selectedFolder);
+    await axios.post('/api/cloudinary/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form/data',
+      },
+    });
+    fetchFolders();
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={newFolderName}
+        onChange={(e) => setNewFolderName(e.target.value)}
+      />
+      <button onClick={createFolder}>Create Folder</button>
+      <input type="file" onChange={uploadImage} />
+      {folders.map(folder => (
+        <div key={folder.name}>
+          {folder.name}
+          <button onClick={() => setSelectedFolder(folder.name)}>Select</button>
+        </div>
+      ))}
+    </div>
+  );
+}
   const [ticketPrice, setTicketPrice] = useState("");
   const [disclaimer, setDisclaimer] = useState("");
 

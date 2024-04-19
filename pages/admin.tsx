@@ -1,3 +1,24 @@
+import React, { useEffect, useState } from 'react';
+import CloudinaryFolderList from '../components/CloudinaryFolderList';
+import CloudinaryImageGrid from '../components/CloudinaryImageGrid';
+
+// Add necessary imports and states to handle Cloudinary Folder and Images display.
+// Implementation of CloudinaryFolderList and CloudinaryImageGrid components usage.
+
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+// Add necessary imports and form to create new Cloudinary folder.
+// Implementation of form submission logic to call the create-folder API.
+
+
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
+
+// Add necessary imports and setup for photo upload.
+// Implementation of Dropzone for file selection and upload button to call the upload-photo API.
+
+
 import React, { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";

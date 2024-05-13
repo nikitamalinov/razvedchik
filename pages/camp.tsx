@@ -12,7 +12,7 @@ export default function Camp() {
             <h1 className="mr-auto text-3xl mb-5 font-medium">Forms</h1>
             <div className="flex flex-col sev:flex-row gap-5 items-center">
               <a
-                href="/camp-package.pdf"
+                href="/camp-package-2024.pdf"
                 target="_blank"
                 className="bg-blue text-white rounded-lg transition-colors duration-200 text-xl
          py-1 px-3 whitespace-nowrap shadow-md hover:shadow-lg cursor-pointer hover:bg-blueHover "

@@ -20,7 +20,7 @@ export default function App({
   if (
     router.pathname === "/membership/adult" ||
     router.pathname === "/membership/child" ||
-    router.pathname === "/camp-package" ||
+    router.pathname === "/camp-package-2024" ||
     router.pathname === "/link-tree"
   ) {
     showNavbar = false;

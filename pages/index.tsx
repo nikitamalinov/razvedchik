@@ -75,9 +75,53 @@ function HomePage() {
 
   return (
     <div className="flex flex-col w-[100vw] text-black">
-      <div className="flex flex-col tw:flex-row items-center justify-center bg-transparent pt-12 pb-16 gap-6 tw:gap-32 h-[calc(100svh-135px)] ">
-        <div className="flex flex-col items-center justify-center bg-light z-[50] p-5 tw:absolute tw:left-[10%] xs:mt-[24px] mt-[0px] tw:top-[300px] rounded-lg">
-          <span className="text-4xl five:text-5xl tw:text-7xl font-semibold ">
+      <div className="flex flex-col items-center  bg-light">
+        <h1 className="text-4xl five:text-5xl tw:text-7xl font-semibold text-center mt-12">
+          ST. GEORGE PATHFINDERS
+        </h1>
+        <h2 className="mt-5 text-2xl">LOS ANGELES, CA</h2>
+
+        <div className="flex items-center justify-center mt-12 gap-8 footerXM:gap-10 text-xl">
+          <motion.button
+            whileHover={{
+              scale: 1.04,
+              transition: { duration: 0.1 },
+            }}
+            whileTap={{
+              scale: 0.98,
+              transition: { duration: 0.1 },
+            }}
+            onClick={() => {
+              onOpen();
+            }}
+            className="text-lg five:text-xl bg-blue hover:bg-blueHover px-5 py-3 rounded-lg font-semibold whitespace-nowrap"
+          >
+            Join Us
+          </motion.button>
+          <motion.button
+            whileHover={{
+              scale: 1.04,
+              transition: { duration: 0.1 },
+            }}
+            whileTap={{
+              scale: 0.98,
+              transition: { duration: 0.1 },
+            }}
+            className="text-lg five:text-xl bg-purple text-white hover:bg-purpleHover px-5 py-3 rounded-lg  whitespace-nowrap"
+          >
+            <Link href="/calendar">View Calendar</Link>
+          </motion.button>
+        </div>
+        <div className="mt-20 mb-20">
+          <iframe
+            className="lg:h-[540px] lg:w-[960px] md:h-[396px] md:w-[704px] sm:h-[333px] sm:w-[592px] w-[90vw] aspect-video"
+            src={`https://www.youtube.com/embed/kgOjo6mY0ZY?autoplay=1&mute=1&loop=1&playlist=kgOjo6mY0ZY&rel=0`}
+            allow="accelerometer; autoplay; encrypted-media; fullscreen; gyroscope; picture-in-picture"
+          ></iframe>
+        </div>
+        {/* Old way that filled up whole screen */}
+        {/*<div className="flex flex-col items-center justify-center bg-light z-[50] p-5 tw:absolute tw:left-[10%] xs:mt-[24px] mt-[0px] tw:top-[300px] rounded-lg">
+                   <span className="text-4xl five:text-5xl tw:text-7xl font-semibold ">
             ST. GEORGE
           </span>{" "}
           <span className="text-4xl five:text-5xl tw:text-7xl mt-5 font-semibold">
@@ -115,31 +159,15 @@ function HomePage() {
               <Link href="/calendar">View Calendar</Link>
             </motion.button>
           </div>
-          {/* <button
-            className="text-white z-[52]"
-            onClick={(e) => {
-              setMuteVideo(0);
-              console.log("HERE");
-            }}
-          >
-            MUTE/UNMUTE
-          </button> */}
-        </div>
-
-        <div className="absolute top-[131px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-133px)]"></div>
+        </div> */}
+        {/* <div className="absolute top-[131px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-133px)]"></div>
         <div className="absolute top-[131px] left-0 z-[1] hidden tw:block ">
           <iframe
             src={`https://www.youtube.com/embed/kgOjo6mY0ZY?autoplay=1&mute=${muteVideo}&loop=1`}
             className="w-[100vw] h-[calc(100svh-133px)]"
           ></iframe>
-        </div>
-        <div className="tw:mt-16 flex p-2 bg-black rounded-lg outline-none shadow-lg">
-          {/* <YouTube
-            className="hidden tw:block"
-            videoId="kgOjo6mY0ZY"
-            opts={opts}
-            onReady={onReady}
-            />*/}
+        </div> */}
+        {/* <div className="tw:mt-16 flex p-2 bg-black rounded-lg outline-none shadow-lg">
           <YouTube
             className="hidden five:block tw:hidden outline-none"
             videoId="kgOjo6mY0ZY"
@@ -158,7 +186,7 @@ function HomePage() {
             opts={opts4}
             onReady={onReady}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="flex bg-purple py-24 ">

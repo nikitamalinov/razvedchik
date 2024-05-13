@@ -18,7 +18,9 @@ export default function Navbar() {
         </nav>
       </div>
       <hr className="h-[1px] opacity-50 bg-[#C2C2C2] w-full border-0 rounded"></hr>
-      {router.pathname !== "/Lina-Sirch" && router.pathname !== "/camp" && (
+
+      {/* Yearly Dues Banner */}
+      {/* {router.pathname !== "/Lina-Sirch" && router.pathname !== "/camp" && (
         <Link
           href="/camp"
           className="bg-[#ffe320] py-2 w-full text-black flex justify-center hover:bg-yellowHover "
@@ -30,7 +32,7 @@ export default function Navbar() {
             <span className="underline">Forms here</span>
           </div>
         </Link>
-      )}
+      )} */}
 
       {/*<Drawer isOpen={isOpen} onClose={closeCart} size="lg">
         <DrawerOverlay />

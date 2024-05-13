@@ -76,7 +76,7 @@ function HomePage() {
   return (
     <div className="flex flex-col w-[100vw] text-black">
       <div className="flex flex-col items-center  bg-light">
-        <h1 className="text-4xl five:text-5xl tw:text-7xl font-semibold text-center mt-12">
+        <h1 className="text-4xl five:text-5xl tw:text-7xl font-semibold text-center mt-12 mx-5">
           ST. GEORGE PATHFINDERS
         </h1>
         <h2 className="mt-5 text-2xl">LOS ANGELES, CA</h2>
@@ -112,7 +112,7 @@ function HomePage() {
             <Link href="/calendar">View Calendar</Link>
           </motion.button>
         </div>
-        <div className="mt-20 mb-20">
+        <div className="mt-16 mb-20">
           <iframe
             className="lg:h-[540px] lg:w-[960px] md:h-[396px] md:w-[704px] sm:h-[333px] sm:w-[592px] w-[90vw] aspect-video"
             src={`https://www.youtube.com/embed/kgOjo6mY0ZY?autoplay=1&mute=1&loop=1&playlist=kgOjo6mY0ZY&rel=0`}

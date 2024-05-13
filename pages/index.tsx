@@ -160,11 +160,11 @@ function HomePage() {
             </motion.button>
           </div>
         </div> */}
-        {/* <div className="absolute top-[131px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-133px)]"></div>
+        {/* <div className="absolute top-[131px] left-0 z-[2] hidden tw:block bg-blue bg-opacity-10 w-[100vw] h-[calc(100svh-93px)]"></div>
         <div className="absolute top-[131px] left-0 z-[1] hidden tw:block ">
           <iframe
             src={`https://www.youtube.com/embed/kgOjo6mY0ZY?autoplay=1&mute=${muteVideo}&loop=1`}
-            className="w-[100vw] h-[calc(100svh-133px)]"
+            className="w-[100vw] h-[calc(100svh-93px)]"
           ></iframe>
         </div> */}
         {/* <div className="tw:mt-16 flex p-2 bg-black rounded-lg outline-none shadow-lg">

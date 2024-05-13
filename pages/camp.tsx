@@ -5,7 +5,7 @@ import React from "react";
 
 export default function Camp() {
   return (
-    <div className="h-[calc(100svh-95px)] bg-light">
+    <div className="h-[calc(100svh-93px)] bg-light">
       <div className="flex flex-col w-full justify-center font-helvetica font-normal items-center  text-black p-10">
         <div className="flex items-center gap-5">
           <div className=" flex flex-col pt-16 items-center py-4 ">

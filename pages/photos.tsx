@@ -51,7 +51,7 @@ export default function Photos({ divArray }: { divArray: number[] }) {
   }
 
   return (
-    <div className="min-h-[calc(100svh-133px)] py-8 px-4 ml:pr-8 bg-light">
+    <div className="min-h-[calc(100svh-93px)] py-8 px-4 ml:pr-8 bg-light">
       <h2 className="text-2xl mx-auto text-center">
         Catalina Trip November 2023
       </h2>

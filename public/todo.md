@@ -1,0 +1,4 @@
+- authorization for viewing photos -> use redis for accounts
+- add more text -> about section
+- shop section
+- cloudinary add photos

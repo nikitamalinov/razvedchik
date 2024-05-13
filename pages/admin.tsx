@@ -70,7 +70,7 @@ export default function Admin() {
 
   if (status !== "authenticated") {
     return (
-      <div className=" flex items-center justify-center min-h-[calc(100svh-133px)]">
+      <div className=" flex items-center justify-center min-h-[calc(100svh-93px)]">
         <div className="relative items-center">
           <motion.button
             whileHover={{
@@ -203,7 +203,7 @@ export default function Admin() {
 
   if (status === "authenticated") {
     return (
-      <div className="flex flex-col items-center py-16 min-h-[calc(100svh-133px)]">
+      <div className="flex flex-col items-center py-16 min-h-[calc(100svh-93px)]">
         <div className="flex flex-col ">
           <div className="flex flex-col gap-5 mx-5">
             {events &&

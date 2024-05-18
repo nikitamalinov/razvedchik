@@ -10,6 +10,7 @@ import JoinModal from "@/components/HomePage/JoinModal";
 import YouTube from "react-youtube";
 import TicketModal from "@/components/HomePage/TicketModal";
 // https://www.youtube.com/watch?v=4N55fVuxxOg
+import { FaGithub } from "react-icons/fa";
 
 import EventModal from "@/components/Modal/EventModal";
 
@@ -372,3 +373,18 @@ function HomePage() {
 }
 
 export default HomePage;
+              <motion.a
+                whileHover={{
+                  scale: 1.04,
+                  transition: { duration: 0.1 },
+                }}
+                whileTap={{
+                  scale: 0.98,
+                  transition: { duration: 0.1 },
+                }}
+                className="text-light"
+                href="https://github.com/nikitamalinov/razvedchik"
+                target="_blank"
+              >
+                <FaGithub className="text-3xl" />
+              </motion.a>

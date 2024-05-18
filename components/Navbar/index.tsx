@@ -16,10 +16,18 @@ export default function Navbar() {
           <WebNav />
           <MobileNav />
         </nav>
+      {router.pathname !== "/Lina-Sirch" && router.pathname !== "/camp" && (
+        <Link
+          href="https://www.zeffy.com/ticketing/becab808-3c97-462e-b0d7-b26b5fd76e79"
+          className="bg-[#ffe320] py-2 w-full text-black flex justify-center hover:bg-yellowHover "
+        >
+          <div className="mx-5 text-center">
+            <span className="semi-bold">Get your Ball Tickets! &nbsp;</span>
+          </div>
+        </Link>
       </div>
       <hr className="h-[1px] opacity-50 bg-[#C2C2C2] w-full border-0 rounded"></hr>
 
-      {/* Yearly Dues Banner */}
       {/* {router.pathname !== "/Lina-Sirch" && router.pathname !== "/camp" && (
         <Link
           href="/camp"
@@ -34,55 +42,6 @@ export default function Navbar() {
         </Link>
       )} */}
 
-      {/*<Drawer isOpen={isOpen} onClose={closeCart} size="lg">
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Cart</DrawerHeader>
-
-          <DrawerBody>
-            {cartItems.map((item) => {
-              return <CartItem key={item.id} {...item} />;
-            })}
-            <div className="text-lg mb-8">
-              Total{" "}
-              {formatCurrency(
-                cartItems.reduce((total, cartItem) => {
-                  const item = [
-                    storeItems.find(
-                      (i) => i.id.toString() + "-SM" === cartItem.id
-                    ),
-                    storeItems.find(
-                      (i) => i.id.toString() + "-MD" === cartItem.id
-                    ),
-
-                    storeItems.find(
-                      (i) => i.id.toString() + "-LG" === cartItem.id
-                    ),
-
-                    storeItems.find(
-                      (i) => i.id.toString() + "-XL" === cartItem.id
-                    ),
-                  ];
-                  for (let i = 0; i < item.length; i++) {
-                    total += (item[i]?.price || 0) * cartItem.quantity;
-                  }
-
-                  return total;
-                }, 0)
-              )}
-            </div>
-            <button
-              onClick={() => {
-                closeCart();
-              }}
-              className="flex gap-1 items-center bg-purple rounded-lg px-2 py-1 text-lg"
-            >
-              Checkout <MdOutlineShoppingCartCheckout />
-            </button>
-          </DrawerBody>
-        </DrawerContent>
-            </Drawer>*/}
     </div>
   );
 }

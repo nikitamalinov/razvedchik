@@ -1,10 +1,18 @@
 import React from "react";
 
+import { getSession } from "next-auth/react";
 import { useState } from "react";
 import useSWR from "swr";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import YouTube from "react-youtube";
 
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return { redirect: { destination: "/auth/signin", permanent: false } };
+  }
+  return { props: { session } };
+}
 export const getStaticProps = async () => {
   const divArray = Array.from({ length: 33 }, (_, index) => index + 1);
 

@@ -17,7 +17,7 @@ function convertMonth(month: string) {
     case 7:
       return "July";
     case 8:
-      return "Augest";
+      return "August";
     case 9:
       return "September";
     case 10:

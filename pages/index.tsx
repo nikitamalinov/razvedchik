@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useCalendarContext } from "@/context/CalendarContext";
 import { Spinner, useDisclosure } from "@chakra-ui/react";
 import { convertDate } from "@/utils/mapping";
-import { BsFacebook, BsInstagram } from "react-icons/bs";
+import { BsFacebook, BsInstagram, BsGithub, BsGit } from "react-icons/bs";
 import JoinModal from "@/components/HomePage/JoinModal";
 import YouTube from "react-youtube";
 import TicketModal from "@/components/HomePage/TicketModal";
@@ -347,6 +347,21 @@ function HomePage() {
                 target="_blank"
               >
                 <BsInstagram className="text-3xl" />
+              </motion.a>
+              <motion.a
+                whileHover={{
+                  scale: 1.04,
+                  transition: { duration: 0.1 },
+                }}
+                whileTap={{
+                  scale: 0.98,
+                  transition: { duration: 0.1 },
+                }}
+                className="text-light"
+                href="https://github.com/nikitamalinov/razvedchik"
+                target="_blank"
+              >
+                <BsGithub className="text-3xl" />
               </motion.a>
             </div>
           </div>

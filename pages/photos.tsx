@@ -4,6 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import YouTube from "react-youtube";
+import Layout from "@/components/Layout";
 
 export const getStaticProps = async () => {
   const divArray = Array.from({ length: 33 }, (_, index) => index + 1);
@@ -51,56 +52,85 @@ export default function Photos({ divArray }: { divArray: number[] }) {
   }
 
   return (
-    <div className="min-h-[calc(100svh-93px)] py-8 px-4 ml:pr-8 bg-light">
-      <h2 className="text-2xl mx-auto text-center">
-        Catalina Trip November 2023
-      </h2>
-      {/* <div className="flex p-1 pb-3 bg-gray rounded-lg outline-none shadow-lg"> */}
-      <div className="my-5 mx-auto flex items-center justify-center">
-        <YouTube
-          className="hidden footerSM:block"
-          videoId="eV7_IkguORM"
-          opts={opts}
-          onReady={onReady}
-        />
-        <YouTube
-          className="footerSM:hidden"
-          videoId="eV7_IkguORM"
-          opts={opts4}
-          onReady={onReady}
-        />
-      </div>
+    <Layout className="bg-light">
+      <div className="py-8 px-4 ml:pr-8 ">
+        <h2 className="text-2xl mx-auto text-center">
+          Catalina Trip November 2023
+        </h2>
+        {/* <div className="flex p-1 pb-3 bg-gray rounded-lg outline-none shadow-lg"> */}
+        <div className="my-5 mx-auto flex items-center justify-center">
+          <YouTube
+            className="hidden footerSM:block"
+            videoId="eV7_IkguORM"
+            opts={opts}
+            onReady={onReady}
+          />
+          <YouTube
+            className="footerSM:hidden"
+            videoId="eV7_IkguORM"
+            opts={opts4}
+            onReady={onReady}
+          />
+        </div>
 
-      <div className="columns-1 xs:columns-2 lg:columns-3 mb-5">
-        {catalinaPhotos.videoAssets.map(
-          (asset: { url: string }, index: number) => {
+        <div className="columns-1 xs:columns-2 lg:columns-3 mb-5">
+          {catalinaPhotos.videoAssets.map(
+            (asset: { url: string }, index: number) => {
+              return (
+                <div
+                  className={`transition-all duration-350 ease-in-out mb-5 ${
+                    areVideosLoading ? "hidden" : "block"
+                  }`}
+                  key={index}
+                >
+                  <video
+                    muted
+                    controls
+                    onLoadedData={() => {
+                      setAreVideosLoading(false);
+                    }}
+                  >
+                    <source src={asset.url} type="video/mp4" />
+                  </video>
+                </div>
+              );
+            }
+          )}
+        </div>
+        <div className="columns-1 xs:columns-2 lg:columns-3">
+          {catalinaPhotos.imageAssets.map(
+            (asset: { url: string }, index: number) => {
+              return (
+                <div
+                  className={`transition-all duration-350 ease-in-out mb-5  ${
+                    areVideosLoading ? "hidden" : "block"
+                  }`}
+                  key={index}
+                  onClick={() => {
+                    // setSlideNumber(index);
+                    // setOpenModal(true);
+                  }}
+                >
+                  <img
+                    src={asset.url}
+                    alt={`Catalina Trip ${index}`}
+                    style={{ width: "100%" }}
+                    loading="lazy"
+                  />
+                </div>
+              );
+            }
+          )}
+        </div>
+
+        {/* </div> */}
+        <div className="mb-16"></div>
+        <h2 className="text-2xl mx-auto text-center mb-5">Other Photos</h2>
+        <div className="columns-1 xs:columns-2 lg:columns-3">
+          {divArray.map((index: number) => {
             return (
               <div
                 className={`transition-all duration-350 ease-in-out mb-5 ${
-                  areVideosLoading ? "hidden" : "block"
-                }`}
-                key={index}
-              >
-                <video
-                  muted
-                  controls
-                  onLoadedData={() => {
-                    setAreVideosLoading(false);
-                  }}
-                >
-                  <source src={asset.url} type="video/mp4" />
-                </video>
-              </div>
-            );
-          }
-        )}
-      </div>
-      <div className="columns-1 xs:columns-2 lg:columns-3">
-        {catalinaPhotos.imageAssets.map(
-          (asset: { url: string }, index: number) => {
-            return (
-              <div
-                className={`transition-all duration-350 ease-in-out mb-5  ${
                   areVideosLoading ? "hidden" : "block"
                 }`}
                 key={index}
@@ -110,43 +140,15 @@ export default function Photos({ divArray }: { divArray: number[] }) {
                 }}
               >
                 <img
-                  src={asset.url}
-                  alt={`Catalina Trip ${index}`}
+                  src={`/photos/${index}.jpg`}
+                  alt={`LA Lager ${index}`}
                   style={{ width: "100%" }}
                   loading="lazy"
                 />
               </div>
             );
-          }
-        )}
-      </div>
-
-      {/* </div> */}
-      <div className="mb-16"></div>
-      <h2 className="text-2xl mx-auto text-center mb-5">Other Photos</h2>
-      <div className="columns-1 xs:columns-2 lg:columns-3">
-        {divArray.map((index: number) => {
-          return (
-            <div
-              className={`transition-all duration-350 ease-in-out mb-5 ${
-                areVideosLoading ? "hidden" : "block"
-              }`}
-              key={index}
-              onClick={() => {
-                // setSlideNumber(index);
-                // setOpenModal(true);
-              }}
-            >
-              <img
-                src={`/photos/${index}.jpg`}
-                alt={`LA Lager ${index}`}
-                style={{ width: "100%" }}
-                loading="lazy"
-              />
-            </div>
-          );
-        })}
-        {/*openModal && (
+          })}
+          {/*openModal && (
           <div className="fixed top-0 right-0 left-0 bottom-0 z-[1000] bg-transparent flex flex-col items-center justify-center w-[100vw] h-[100svh]">
             <div>Exit</div>
             <div className="flex items-center justify-center w-[100vw]">
@@ -162,7 +164,7 @@ export default function Photos({ divArray }: { divArray: number[] }) {
             </div>
           </div>
         )*/}
-        {/*    <Box overflow="hidden" bg="purple.100" minH="100svh" py="6">
+          {/*    <Box overflow="hidden" bg="purple.100" minH="100svh" py="6">
         <Wrap px="1rem" spacing={4} justify="center">
           {divArray.map((index: number) => {
             return (
@@ -188,7 +190,8 @@ export default function Photos({ divArray }: { divArray: number[] }) {
           })}
         </Wrap>
       </Box>*/}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }

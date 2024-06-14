@@ -54,6 +54,7 @@ export default async function handler(
       template: "joined",
     };
 
+    console.log("data", data);
     mg.messages().send(data);
 
     res.status(200).json({ message: "Success" });

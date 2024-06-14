@@ -1,9 +1,17 @@
 import React from "react";
+import { useState, useEffect } from "react";
 
-import { useState } from "react";
 import useSWR from "swr";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import YouTube from "react-youtube";
+
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+
+// UI libraries
+import { motion } from "framer-motion";
+import { Spinner } from "@chakra-ui/react";
+
+import LoadingSpinner from "@/components/LoadingSpinner";
 import Layout from "@/components/Layout";
 
 export const getStaticProps = async () => {
@@ -17,9 +25,11 @@ export const getStaticProps = async () => {
 };
 
 export default function Photos({ divArray }: { divArray: number[] }) {
-  const [slideNumber, setSlideNumber] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
+  const { data: session, status } = useSession();
   const [areVideosLoading, setAreVideosLoading] = useState(true);
+  const [email, setEmail] = useState<null | string>(null);
+  const [isSignInLoading, setIsSignInLoading] = useState(false);
+
   const opts = {
     height: "300",
     width: "534",
@@ -42,12 +52,71 @@ export default function Photos({ divArray }: { divArray: number[] }) {
 
   let url = `/api/photos/get-cloudinary-photos?folderName=Collage/Catalina Trip 2023`;
 
-  const { data: catalinaPhotos, isLoading } = useSWR(url, async () => {
-    const res = await fetch(url);
-    return res.json();
-  });
+  const { data: catalinaPhotos, isLoading } = useSWR(
+    email ? url : null, //only load if email is set
+    async () => {
+      const res = await fetch(url);
+      return res.json();
+    }
+  );
 
-  if (isLoading) {
+  useEffect(() => {
+    if (session && session.user && session.user.email) {
+      setEmail(session.user.email);
+    }
+  }, [session]);
+
+  if (status === "loading") {
+    return <LoadingSpinner />;
+  }
+
+  if (status !== "authenticated") {
+    return (
+      <div className=" flex flex-col gap-5 items-center justify-center min-h-[calc(100svh-133px)]">
+        <span className="text-xl">Log In to access LA Lager photos</span>
+        <div className="relative items-center">
+          <motion.button
+            whileHover={{
+              scale: 1.04,
+              transition: { duration: 0.1 },
+            }}
+            whileTap={{
+              scale: 0.98,
+              transition: { duration: 0.1 },
+            }}
+            onClick={() => {
+              setIsSignInLoading(true);
+              signIn(
+                "auth0",
+                { callbackUrl: "/photos" },
+                {
+                  prompt: "login",
+                }
+              ).then(() => {
+                setIsSignInLoading(false);
+              });
+            }}
+            className={` bg-blue text-white rounded-lg transition-colors duration-200 text-xl
+         py-1 px-3 whitespace-nowrap shadow-md hover:shadow-lg cursor-pointer hover:bg-blueHover 
+         ${isSignInLoading ? "opacity-0 pointer-events-none" : ""}`}
+          >
+            Log In
+          </motion.button>
+
+          {isSignInLoading && (
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-blue opacity-50 rounded-lg shadow-md py-1 px-3
+           cursor-not-allowed mr-5"
+            >
+              <Spinner size="md" color="white" />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !catalinaPhotos) {
     return <LoadingSpinner />;
   }
 

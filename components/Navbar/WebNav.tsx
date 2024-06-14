@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { BsCartPlus } from "react-icons/bs";
+
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+
 import { useShoppingCart } from "@/context/ShoppingCartContext";
 
 export default function WebNav() {
   const router = useRouter();
   const { openCart, cartQuantity, closeCart, cartItems, isOpen } =
     useShoppingCart();
+  const { data: session, status } = useSession();
   const LinkStyles = "mr-8 flex items-center ";
 
   let isHome = false;
@@ -73,6 +77,17 @@ export default function WebNav() {
             </span>
           </Link>
         </li>
+        {status === "authenticated" && (
+          <li>
+            <button
+              className={`bg-blue text-white rounded-lg transition-colors duration-200 text-xl 
+              py-1 px-3 whitespace-nowrap shadow-md hover:shadow-lg cursor-pointer hover:bg-blueHover mr-5`}
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
+              Log Out
+            </button>
+          </li>
+        )}
 
         {/*cartQuantity > 0 && (
           <button

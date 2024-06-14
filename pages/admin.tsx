@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
+
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
+
+import { BsTrash3 } from "react-icons/bs";
+import DatePicker from "react-datepicker";
+
 import useSWR from "swr";
-import { convertDate } from "@/utils/mapping";
 import Image from "next/image";
 
+// UI libraries
 import { motion } from "framer-motion";
 import { Spinner } from "@chakra-ui/react";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { BsTrash3, BsYoutube } from "react-icons/bs";
 
-import DatePicker from "react-datepicker";
+import LoadingSpinner from "@/components/LoadingSpinner";
+
+import { convertDate } from "@/utils/mapping";
 
 import "react-datepicker/dist/react-datepicker.css";
 

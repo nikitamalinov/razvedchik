@@ -4,7 +4,7 @@ import jwksClient from "jwks-rsa";
 export function isValidToken(email: string, idToken: string) {
   const decodedToken: any = jwt.decode(idToken);
   const currentTime = Math.floor(Date.now() / 1000);
-  console.log("DECODED TOKEN: ", decodedToken);
+
   if (
     !decodedToken ||
     !decodedToken.iss ||

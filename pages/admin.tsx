@@ -20,19 +20,6 @@ import { convertDate } from "@/utils/mapping";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-function allowedEmail(email: string) {
-  const emailList = [
-    "nikita@malinovsky.net",
-    "dr_drei@sbcglobal.net",
-    "daspteam@gmail.com",
-  ];
-  console.log(emailList);
-  if (emailList.includes(email)) {
-    return true;
-  }
-  return false;
-}
-
 export default function Admin() {
   const { data: session, status } = useSession();
   const [isCalendar, setIsCalendar] = useState(true);
@@ -60,19 +47,32 @@ export default function Admin() {
   const [addEmailLoading, setAddEmailLoading] = useState(false);
   const [deleteEmailLoading, setDeleteEmailLoading] = useState(false);
 
+  const [addedAdmin, setAddedAdmin] = useState("");
+  const [addAdminLoading, setAddAdminLoading] = useState(false);
+  const [deleteAdminLoading, setDeleteAdminLoading] = useState(false);
+
   const router = useRouter();
 
   const inputStyles =
     "text-lg footerSM:text-lg bg-white outline-none indent-1 border-2 rounded-lg focus:ring focus:border-transparent focus:ring-opacity-50";
   const labelStyles = "text-lg";
+
+  let adminsURL = "";
   let emailsURL = "";
-  if (email && allowedEmail(email)) {
-    console.log("HERE");
+  let getAdminsURL = "";
+  if (email && idToken) {
+    adminsURL = `/api/admins/get-all?email=${email}&idToken=${idToken}`;
     emailsURL = `/api/emails/get-all?email=${email}&idToken=${idToken}`;
+    getAdminsURL = `api/admins/get-all?email=${email}&idToken=${idToken}`;
   }
 
   const { data: emails, mutate: emailsMutate } = useSwr(emailsURL, async () => {
     const res = await fetch(emailsURL);
+    return res.json();
+  });
+
+  const { data: admins, mutate: adminsMutate } = useSwr(adminsURL, async () => {
+    const res = await fetch(adminsURL);
     return res.json();
   });
 
@@ -102,12 +102,16 @@ export default function Admin() {
     return res.json();
   });
 
-  console.log(email);
-  if (isLoading || status === "loading" || !email) {
+  const { data: adminEmails } = useSWR(getAdminsURL, async () => {
+    const res = await fetch(getAdminsURL);
+    return res.json();
+  });
+
+  if (isLoading || status === "loading" || !email || !adminEmails) {
     return <LoadingSpinner />;
   }
 
-  if (email && !allowedEmail(email)) {
+  if (!adminEmails.includes(email)) {
     router.push("/");
     return <LoadingSpinner />;
   }
@@ -284,6 +288,43 @@ export default function Admin() {
       await emailsMutate();
     }
     setAddEmailLoading(false);
+    return await res;
+  }
+
+  async function deleteAdmin(adminToDelete: string) {
+    setDeleteAdminLoading(true);
+    const response = await fetch("api/admins/remove-value", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        idToken: idToken,
+        emailToDelete: adminToDelete,
+      }),
+    });
+    const res = await response.json();
+    if (response.ok) {
+      await adminsMutate();
+    }
+    setDeleteAdminLoading(false);
+    return await res;
+  }
+  async function addAdmin(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setAddAdminLoading(true);
+    const response = await fetch("api/admins/add-value", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        idToken: idToken,
+        addedEmail: addedAdmin,
+      }),
+    });
+    const res = await response.json();
+    if (response.ok) {
+      setAddedAdmin("");
+      await adminsMutate();
+    }
+    setAddAdminLoading(false);
     return await res;
   }
 
@@ -514,8 +555,25 @@ export default function Admin() {
               </div>
             </form>
           </div>
-          <h2 className="mt-12">Allowable Emails:</h2>
-          <div className="flex gap-2 items-center mt-2">
+
+          <form onSubmit={addEmail} className="flex items-center gap-2 mt-12">
+            <span>Add email: </span>
+            <input
+              type="email"
+              placeholder="example@gmail.com"
+              value={addedEmail}
+              required
+              onChange={(event) => {
+                setAddedEmail(event.target.value);
+              }}
+              className="outline-none border-2 indent-1 rounded-lg focus:ring-2 focus:border-transparent "
+            />
+            <button className="py-2 px-3 rounded-lg p-2 bg-orange hover:bg-orangeHover">
+              Submit
+            </button>
+          </form>
+          <h2 className="mt-2">Allowable Emails:</h2>
+          <div className="flex flex-col gap-2 items-center mt-2">
             {emails &&
               emails.map((currentEmail: string, index: number) => {
                 return (
@@ -533,15 +591,16 @@ export default function Admin() {
                 );
               })}
           </div>
-          <form onSubmit={addEmail} className="flex items-center gap-2 mt-2">
-            <span>Add email: </span>
+
+          <form onSubmit={addAdmin} className="flex items-center gap-2 mt-12">
+            <span>Add Admin Email: </span>
             <input
               type="email"
               placeholder="example@gmail.com"
-              value={addedEmail}
+              value={addedAdmin}
               required
               onChange={(event) => {
-                setAddedEmail(event.target.value);
+                setAddedAdmin(event.target.value);
               }}
               className="outline-none border-2 indent-1 rounded-lg focus:ring-2 focus:border-transparent "
             />
@@ -549,6 +608,25 @@ export default function Admin() {
               Submit
             </button>
           </form>
+          <h2 className="mt-2">Allowable Admin Emails:</h2>
+          <div className="flex flex-col gap-2 items-center mt-2">
+            {admins &&
+              admins.map((currentAdmin: string, index: number) => {
+                return (
+                  <Tooltip label="Delete email" key={index}>
+                    <span
+                      className="cursor-pointer"
+                      onClick={(e) => {
+                        deleteAdmin(currentAdmin);
+                      }}
+                    >
+                      {currentAdmin}
+                      {index !== admins.length - 1 && ","}
+                    </span>
+                  </Tooltip>
+                );
+              })}
+          </div>
         </div>
       </div>
     );

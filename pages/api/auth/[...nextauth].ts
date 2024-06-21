@@ -20,22 +20,23 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     ],
     callbacks: {
       async signIn({ user, profile, account }) {
-        if (user && user.email) {
-          const email = user.email;
-
-          // Email Check
-          const emailExists = await axios.get(
-            `https://razvedchik.org/api/emails/get-value`,
-            {
-              params: { email: email },
-            }
-          );
-          console.log("EE: ", emailExists);
-          if (emailExists.data.isAllowed) {
-            return true;
-          }
-        }
-        return "/not-authorized";
+        // if (user && user.email) {
+        //   const email = user.email;
+        //   // Email Check
+        //   const emailExists = await axios.get(
+        //     // `https://razvedchik.org/api/emails/get-value`,
+        //     `http://localhost:3000/api/emails/get-value`,
+        //     {
+        //       params: { email: email },
+        //     }
+        //   );
+        //   console.log("EE: ", emailExists);
+        //   if (emailExists.data.isAllowed) {
+        //     return true;
+        //   }
+        // }
+        // return "/not-authorized";
+        return true;
       },
       async session({ session, token, user }) {
         session.idToken = token.idToken || "";

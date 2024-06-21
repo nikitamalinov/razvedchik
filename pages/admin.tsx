@@ -8,16 +8,30 @@ import DatePicker from "react-datepicker";
 
 import useSWR from "swr";
 import Image from "next/image";
-
+import { useRouter } from "next/router";
 // UI libraries
 import { motion } from "framer-motion";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, Tooltip } from "@chakra-ui/react";
 
 import LoadingSpinner from "@/components/LoadingSpinner";
+import useSwr from "swr";
 
 import { convertDate } from "@/utils/mapping";
 
 import "react-datepicker/dist/react-datepicker.css";
+
+function allowedEmail(email: string) {
+  const emailList = [
+    "nikita@malinovsky.net",
+    "dr_drei@sbcglobal.net",
+    "daspteam@gmail.com",
+  ];
+  console.log(emailList);
+  if (emailList.includes(email)) {
+    return true;
+  }
+  return false;
+}
 
 export default function Admin() {
   const { data: session, status } = useSession();
@@ -25,6 +39,8 @@ export default function Admin() {
   const [buttonOption, setButtonOption] = useState("No Button");
 
   const [email, setEmail] = useState<string | null>(null);
+  const [idToken, setIdToken] = useState<string | null>(null);
+
   const [eventName, setEventName] = useState("");
   const [location, setLocation] = useState("");
   const [from, setFrom] = useState(new Date());
@@ -40,14 +56,36 @@ export default function Admin() {
   const [ticketPrice, setTicketPrice] = useState("");
   const [disclaimer, setDisclaimer] = useState("");
 
+  const [addedEmail, setAddedEmail] = useState("");
+  const [addEmailLoading, setAddEmailLoading] = useState(false);
+  const [deleteEmailLoading, setDeleteEmailLoading] = useState(false);
+
+  const router = useRouter();
+
   const inputStyles =
     "text-lg footerSM:text-lg bg-white outline-none indent-1 border-2 rounded-lg focus:ring focus:border-transparent focus:ring-opacity-50";
   const labelStyles = "text-lg";
+  let emailsURL = "";
+  if (email && allowedEmail(email)) {
+    console.log("HERE");
+    emailsURL = `/api/emails/get-all?email=${email}&idToken=${idToken}`;
+  }
+
+  const { data: emails, mutate: emailsMutate } = useSwr(emailsURL, async () => {
+    const res = await fetch(emailsURL);
+    return res.json();
+  });
 
   useEffect(() => {
-    if (session && session.user && session.user.email) {
-      setEmail(session.user.email);
-    }
+    const fetchSession = async () => {
+      if (session && session.user && session.user.email) {
+        setEmail(session.user.email);
+      }
+      if (session && session.idToken) {
+        setIdToken(session.idToken);
+      }
+    };
+    fetchSession();
   }, [session]);
 
   let url = "";
@@ -64,7 +102,13 @@ export default function Admin() {
     return res.json();
   });
 
-  if (isLoading || status === "loading") {
+  console.log(email);
+  if (isLoading || status === "loading" || !email) {
+    return <LoadingSpinner />;
+  }
+
+  if (email && !allowedEmail(email)) {
+    router.push("/");
     return <LoadingSpinner />;
   }
 
@@ -203,6 +247,43 @@ export default function Admin() {
     mutate();
     setIsDeleteLoading(false);
     setEventDeleteId("");
+    return await res;
+  }
+
+  async function deleteEmail(emailToDelete: string) {
+    setDeleteEmailLoading(true);
+    const response = await fetch("api/emails/remove-value", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        idToken: idToken,
+        emailToDelete: emailToDelete,
+      }),
+    });
+    const res = await response.json();
+    if (response.ok) {
+      await emailsMutate();
+    }
+    setDeleteEmailLoading(false);
+    return await res;
+  }
+  async function addEmail(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setAddEmailLoading(true);
+    const response = await fetch("api/emails/add-value", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        idToken: idToken,
+        addedEmail: addedEmail,
+      }),
+    });
+    const res = await response.json();
+    if (response.ok) {
+      setAddedEmail("");
+      await emailsMutate();
+    }
+    setAddEmailLoading(false);
     return await res;
   }
 
@@ -433,6 +514,41 @@ export default function Admin() {
               </div>
             </form>
           </div>
+          <h2 className="mt-12">Allowable Emails:</h2>
+          <div className="flex gap-2 items-center mt-2">
+            {emails &&
+              emails.map((currentEmail: string, index: number) => {
+                return (
+                  <Tooltip label="Delete email" key={index}>
+                    <span
+                      className="cursor-pointer"
+                      onClick={(e) => {
+                        deleteEmail(currentEmail);
+                      }}
+                    >
+                      {currentEmail}
+                      {index !== emails.length - 1 && ","}
+                    </span>
+                  </Tooltip>
+                );
+              })}
+          </div>
+          <form onSubmit={addEmail} className="flex items-center gap-2 mt-2">
+            <span>Add email: </span>
+            <input
+              type="email"
+              placeholder="example@gmail.com"
+              value={addedEmail}
+              required
+              onChange={(event) => {
+                setAddedEmail(event.target.value);
+              }}
+              className="outline-none border-2 indent-1 rounded-lg focus:ring-2 focus:border-transparent "
+            />
+            <button className="py-2 px-3 rounded-lg p-2 bg-orange hover:bg-orangeHover">
+              Submit
+            </button>
+          </form>
         </div>
       </div>
     );

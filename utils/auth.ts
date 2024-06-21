@@ -39,12 +39,12 @@ async function getAuth0PublicKey(kid: any) {
 export const verifyToken = async function (idToken: string) {
   let verified = false;
   try {
-    const kid: any = jwt.decode(idToken, { complete: true }).header.kid;
+    const kid: any = jwt.decode(idToken, { complete: true })?.header.kid;
     let publicKey: string; // set to cache value if there is one
-    if (publicKey === undefined) {
-      publicKey = await getAuth0PublicKey(kid);
-      //  set cache
-    }
+    // if (publicKey === undefined) {
+    publicKey = await getAuth0PublicKey(kid);
+    //  set cache
+    // }
     await jwt.verify(
       idToken,
       publicKey,

@@ -15,6 +15,8 @@ export default async function handler(
   if (!isValidToken(email, idToken)) {
     return res.status(405).json({ message: "Invalid token" });
   }
+  await kv.sadd("emailWhiteListDeleted", emailToDelete);
   await kv.srem("emailWhiteList", emailToDelete);
+
   return res.status(200).json({ message: "Success" });
 }

@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import Auth0Provider from "next-auth/providers/auth0";
 import prisma from "@/lib/client";
-
+import axios from "axios";
 const {
   AUTH0_CLIENT_ID = "",
   AUTH0_CLIENT_SECRET = "",
@@ -20,34 +20,32 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     ],
     callbacks: {
       async signIn({ user, profile, account }) {
-        console.log("user: ", user);
-        console.log("profile", profile);
-        console.log("account", account);
-
-        let emailList = [
-          process.env.ADMIN_ONE || "",
-          process.env.ADMIN_TWO || "",
-          process.env.ADMIN_THREE || "",
-          process.env.ADMIN_FOUR || "",
-        ];
         if (user && user.email) {
-          if (emailList.includes(user.email)) {
-            return true;
-          } else {
-            const isAllowedUser = await prisma.admin.findUnique({
-              where: {
-                email: user.email,
-              },
-              select: {
-                email: true,
-              },
-            });
-            if (isAllowedUser !== undefined) {
-              return true;
+          const email = user.email;
+
+          // Email Check
+          const emailExists = await axios.get(
+            `https://apidocs.stage.gocariq.com/api/emails/get-value`,
+            {
+              params: { email: email },
             }
+          );
+          console.log("EE: ", emailExists);
+          if (emailExists.data.isAllowed) {
+            return true;
           }
         }
-        return false;
+        return "/not-authorized";
+      },
+      async session({ session, token, user }) {
+        session.idToken = token.idToken || "";
+        return session;
+      },
+      async jwt({ token, account }) {
+        if (account) {
+          token.idToken = account.id_token;
+        }
+        return token;
       },
     },
     pages: {

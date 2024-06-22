@@ -1,11 +1,12 @@
 import Link from "next/link";
-import WebNav from "./WebNav";
 import Image from "next/image";
+
+// Components
+import WebNav from "./WebNav";
+
 import MobileNav from "./MobileNav";
-import { useRouter } from "next/router";
 
 export default function Navbar() {
-  const router = useRouter();
   return (
     <div className="flex flex-col w-full justify-center font-helvetica font-normal items-center bg-purple text-white ">
       <div className="flex flex-col w-[95vw] footerXM:w-[90vw] footerSM:w-[85vw] sm:w-[80vw] xxl:w-[1280px] ">

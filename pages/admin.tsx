@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
 import { BsTrash3 } from "react-icons/bs";
@@ -9,6 +8,7 @@ import DatePicker from "react-datepicker";
 import useSWR from "swr";
 import Image from "next/image";
 import { useRouter } from "next/router";
+
 // UI libraries
 import { motion } from "framer-motion";
 import { Spinner, Tooltip } from "@chakra-ui/react";
@@ -19,10 +19,11 @@ import useSwr from "swr";
 import { convertDate } from "@/utils/mapping";
 
 import "react-datepicker/dist/react-datepicker.css";
+import Unauthenticated from "@/components/Unauthenticated";
 
 export default function Admin() {
   const { data: session, status } = useSession();
-  const [isCalendar, setIsCalendar] = useState(true);
+
   const [buttonOption, setButtonOption] = useState("No Button");
 
   const [email, setEmail] = useState<string | null>(null);
@@ -33,7 +34,6 @@ export default function Admin() {
   const [from, setFrom] = useState(new Date());
   const [to, setTo] = useState(new Date());
 
-  const [isSignInLoading, setIsSignInLoading] = useState(false);
   const [isEventLoading, setIsEventLoading] = useState(false);
   const [eventDeleteId, setEventDeleteId] = useState("");
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -107,6 +107,10 @@ export default function Admin() {
     return res.json();
   });
 
+  if (status === "unauthenticated") {
+    return <Unauthenticated callbackUrl="/admin" />;
+  }
+
   if (isLoading || status === "loading" || !email || !adminEmails) {
     return <LoadingSpinner />;
   }
@@ -119,50 +123,6 @@ export default function Admin() {
   let events: any = [];
   if (eventsToJSON && eventsToJSON != "[object Object]") {
     events = JSON.parse(eventsToJSON);
-  }
-
-  if (status !== "authenticated") {
-    return (
-      <div className=" flex items-center justify-center min-h-[calc(100svh-93px)]">
-        <div className="relative items-center">
-          <motion.button
-            whileHover={{
-              scale: 1.04,
-              transition: { duration: 0.1 },
-            }}
-            whileTap={{
-              scale: 0.98,
-              transition: { duration: 0.1 },
-            }}
-            onClick={() => {
-              setIsSignInLoading(true);
-              signIn(
-                "auth0",
-                { callbackUrl: "/admin" },
-                {
-                  prompt: "login",
-                }
-              ).then(() => {
-                setIsSignInLoading(false);
-              });
-            }}
-            className={` bg-blue text-white rounded-lg transition-colors duration-200 text-xl
-         py-1 px-3 whitespace-nowrap shadow-md hover:shadow-lg cursor-pointer hover:bg-blueHover mr-5
-         ${isSignInLoading ? "opacity-0 pointer-events-none" : ""}`}
-          >
-            Sign In
-          </motion.button>
-          {isSignInLoading && (
-            <div
-              className="absolute inset-0 flex items-center justify-center bg-blue opacity-50 rounded-lg shadow-md py-1 px-3
-           cursor-not-allowed mr-5"
-            >
-              <Spinner size="md" color="white" />
-            </div>
-          )}
-        </div>
-      </div>
-    );
   }
 
   const handleImageUpload = async (file: File) => {
@@ -330,7 +290,7 @@ export default function Admin() {
 
   if (status === "authenticated") {
     return (
-      <div className="flex flex-col items-center py-16 min-h-[calc(100svh-93px)]">
+      <div className="flex flex-col items-center py-16 min-h-[calc(100svh-133px)]">
         <div className="flex flex-col ">
           <div className="flex flex-col gap-5 mx-5">
             {events &&
@@ -573,23 +533,25 @@ export default function Admin() {
             </button>
           </form>
           <h2 className="mt-2">Allowable Emails:</h2>
-          <div className="flex flex-col gap-2 items-center mt-2">
-            {emails &&
-              emails.map((currentEmail: string, index: number) => {
-                return (
-                  <Tooltip label="Delete email" key={index}>
-                    <span
-                      className="cursor-pointer"
-                      onClick={(e) => {
-                        deleteEmail(currentEmail);
-                      }}
-                    >
-                      {currentEmail}
-                      {index !== emails.length - 1 && ","}
-                    </span>
-                  </Tooltip>
-                );
-              })}
+          <div className="flex flex-col w-[95vw] footerXM:w-[90vw] footerSM:w-[85vw] sm:w-[80vw] xxl:w-[1280px]">
+            <div className="flex flex-wrap gap-2 justify-center items-center mt-2">
+              {emails &&
+                emails.map((currentEmail: string, index: number) => {
+                  return (
+                    <Tooltip label="Delete email" key={index}>
+                      <span
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          deleteEmail(currentEmail);
+                        }}
+                      >
+                        {currentEmail}
+                        {index !== emails.length - 1 && ","}
+                      </span>
+                    </Tooltip>
+                  );
+                })}
+            </div>
           </div>
 
           <form onSubmit={addAdmin} className="flex items-center gap-2 mt-12">

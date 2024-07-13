@@ -35,7 +35,7 @@ export default function UnauthenticatedPhotosPage() {
                 setIsSignInLoading(true);
                 signIn(
                   "auth0",
-                  { callbackUrl: "photos" },
+                  { callbackUrl: "/photos" },
                   {
                     prompt: "login",
                   }

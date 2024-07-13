@@ -4,11 +4,16 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import YouTube from "react-youtube";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Layout from "@/components/Layout";
 import Unauthenticated from "@/components/Unauthenticated";
+import FolderList from "@/components/Photos/FolderList";
+import FolderPhotos from "@/components/Photos/FolderPhotos";
+import jwt from "jsonwebtoken";
+import PhotosDisplay from "@/components/Photos/PhotosDisplay";
+import LazyImage from "@/components/Photos/LazyImage";
 
 export const getStaticProps = async () => {
   const divArray = Array.from({ length: 33 }, (_, index) => index + 1);
@@ -23,7 +28,11 @@ export const getStaticProps = async () => {
 export default function Photos({ divArray }: { divArray: number[] }) {
   const { data: session, status } = useSession();
   const [areVideosLoading, setAreVideosLoading] = useState(true);
+
   const [email, setEmail] = useState<null | string>(null);
+  const [idToken, setIdToken] = useState<null | string>(null);
+
+  const [folder, setFolder] = useState(null);
 
   const opts = {
     height: "300",
@@ -45,12 +54,15 @@ export default function Photos({ divArray }: { divArray: number[] }) {
     event.target.mute();
   };
 
-  let url = `/api/photos/get-cloudinary-photos?folderName=Collage/Catalina Trip 2023`;
+  let folderListURL = "";
+  if (email && idToken) {
+    folderListURL = `/api/photos/get-folders?email=${email}&idToken=${idToken}`;
+  }
 
-  const { data: catalinaPhotos, isLoading } = useSWR(
-    email ? url : null, //only load if email is set
+  const { data: folderList, isLoading: isFolderListLoading } = useSWR(
+    folderListURL,
     async () => {
-      const res = await fetch(url);
+      const res = await fetch(folderListURL);
       return res.json();
     }
   );
@@ -59,22 +71,30 @@ export default function Photos({ divArray }: { divArray: number[] }) {
     if (session && session.user && session.user.email) {
       setEmail(session.user.email);
     }
+    if (session && session.idToken) {
+      setIdToken(session.idToken);
+    }
   }, [session]);
 
   if (status === "unauthenticated") {
     return <Unauthenticated callbackUrl="/photos" />;
   }
 
-  if (isLoading || !catalinaPhotos || status === "loading") {
+  if (status === "loading" || isFolderListLoading || !folderList) {
     return <LoadingSpinner />;
   }
-
+  if (idToken) {
+    const decodedToken: any = jwt.decode(idToken);
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (decodedToken.exp < currentTime) {
+      signOut({ callbackUrl: "/photos" });
+    }
+  }
+  console.log(folderList);
+  console.log(folder);
   return (
     <Layout className="bg-light">
       <div className="py-8 px-4 ml:pr-8 ">
-        <h2 className="text-2xl mx-auto text-center">
-          Catalina Trip November 2023
-        </h2>
         {/* <div className="flex p-1 pb-3 bg-gray rounded-lg outline-none shadow-lg"> */}
         <div className="my-5 mx-auto flex items-center justify-center">
           <YouTube
@@ -91,82 +111,38 @@ export default function Photos({ divArray }: { divArray: number[] }) {
           />
         </div>
 
-        <div className="columns-1 xs:columns-2 lg:columns-3 mb-5">
-          {catalinaPhotos.videoAssets.map(
-            (asset: { url: string }, index: number) => {
+        <FolderList
+          folderList={folderList}
+          folder={folder}
+          setFolder={setFolder}
+        />
+
+        {folder !== "Other Photos" && (
+          <PhotosDisplay idToken={idToken} email={email} folderName={folder} />
+        )}
+
+        {folder === "Other Photos" && (
+          <div className="columns-1 xs:columns-2 lg:columns-3 mt-6">
+            {divArray.map((index: number) => {
               return (
                 <div
-                  className={`transition-all duration-350 ease-in-out mb-5 ${
-                    areVideosLoading ? "hidden" : "block"
-                  }`}
-                  key={index}
-                >
-                  <video
-                    muted
-                    controls
-                    onLoadedData={() => {
-                      setAreVideosLoading(false);
-                    }}
-                  >
-                    <source src={asset.url} type="video/mp4" />
-                  </video>
-                </div>
-              );
-            }
-          )}
-        </div>
-        <div className="columns-1 xs:columns-2 lg:columns-3">
-          {catalinaPhotos.imageAssets.map(
-            (asset: { url: string }, index: number) => {
-              return (
-                <div
-                  className={`transition-all duration-350 ease-in-out mb-5  ${
-                    areVideosLoading ? "hidden" : "block"
-                  }`}
-                  key={index}
+                  className={`transition-all duration-350 ease-in-out mb-5`}
+                  key={index + "other photos"}
                   onClick={() => {
                     // setSlideNumber(index);
                     // setOpenModal(true);
                   }}
                 >
                   <img
-                    src={asset.url}
-                    alt={`Catalina Trip ${index}`}
+                    src={`/photos/${index}.jpg`}
+                    alt={`LA Lager ${index}`}
                     style={{ width: "100%" }}
                     loading="lazy"
                   />
                 </div>
               );
-            }
-          )}
-        </div>
-
-        {/* </div> */}
-        <div className="mb-16"></div>
-        <h2 className="text-2xl mx-auto text-center mb-5">Other Photos</h2>
-        <div className="columns-1 xs:columns-2 lg:columns-3">
-          {divArray.map((index: number) => {
-            return (
-              <div
-                className={`transition-all duration-350 ease-in-out mb-5 ${
-                  areVideosLoading ? "hidden" : "block"
-                }`}
-                key={index}
-                onClick={() => {
-                  // setSlideNumber(index);
-                  // setOpenModal(true);
-                }}
-              >
-                <img
-                  src={`/photos/${index}.jpg`}
-                  alt={`LA Lager ${index}`}
-                  style={{ width: "100%" }}
-                  loading="lazy"
-                />
-              </div>
-            );
-          })}
-          {/*openModal && (
+            })}
+            {/*openModal && (
           <div className="fixed top-0 right-0 left-0 bottom-0 z-[1000] bg-transparent flex flex-col items-center justify-center w-[100vw] h-[100svh]">
             <div>Exit</div>
             <div className="flex items-center justify-center w-[100vw]">
@@ -182,7 +158,7 @@ export default function Photos({ divArray }: { divArray: number[] }) {
             </div>
           </div>
         )*/}
-          {/*    <Box overflow="hidden" bg="purple.100" minH="100svh" py="6">
+            {/*    <Box overflow="hidden" bg="purple.100" minH="100svh" py="6">
         <Wrap px="1rem" spacing={4} justify="center">
           {divArray.map((index: number) => {
             return (
@@ -208,7 +184,8 @@ export default function Photos({ divArray }: { divArray: number[] }) {
           })}
         </Wrap>
       </Box>*/}
-        </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

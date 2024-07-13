@@ -3,10 +3,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { z, ZodError } from "zod";
 
 const schema = z.object({
+  email: z.string().email(),
+  idToken: z.string(),
   folderName: z.string(),
 });
 
 import { v2 as cloudinary } from "cloudinary";
+import { isValidToken } from "@/utils/auth";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -24,7 +27,10 @@ export default async function handler(
   }
 
   try {
-    const folderName = schema.parse(req.query).folderName;
+    const { email, idToken, folderName } = schema.parse(req.query);
+    if (!isValidToken(email, idToken)) {
+      return res.status(405).json({ message: "Invalid token" });
+    }
 
     const images = await cloudinary.api.resources({
       type: "upload",

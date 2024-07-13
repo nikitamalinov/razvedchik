@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import Auth0Provider from "next-auth/providers/auth0";
-import prisma from "@/lib/client";
 import axios from "axios";
+
 const {
   AUTH0_CLIENT_ID = "",
   AUTH0_CLIENT_SECRET = "",

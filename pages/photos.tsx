@@ -10,10 +10,9 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import Layout from "@/components/Layout";
 import Unauthenticated from "@/components/Unauthenticated";
 import FolderList from "@/components/Photos/FolderList";
-import FolderPhotos from "@/components/Photos/FolderPhotos";
 import jwt from "jsonwebtoken";
 import PhotosDisplay from "@/components/Photos/PhotosDisplay";
-import LazyImage from "@/components/Photos/LazyImage";
+import UnauthenticatedPhotosPage from "@/components/Photos/UnauthenticatedPhotosPage";
 
 export const getStaticProps = async () => {
   const divArray = Array.from({ length: 33 }, (_, index) => index + 1);
@@ -77,7 +76,7 @@ export default function Photos({ divArray }: { divArray: number[] }) {
   }, [session]);
 
   if (status === "unauthenticated") {
-    return <Unauthenticated callbackUrl="/photos" />;
+    return <UnauthenticatedPhotosPage />;
   }
 
   if (status === "loading" || isFolderListLoading || !folderList) {

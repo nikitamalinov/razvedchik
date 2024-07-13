@@ -1,77 +1,16 @@
-import Image from "next/image";
-import React, { useState } from "react";
-import Link from "next/link";
+import React from "react";
+
 import { motion } from "framer-motion";
-import { useCalendarContext } from "@/context/CalendarContext";
-import { Spinner, useDisclosure } from "@chakra-ui/react";
-import { convertDate } from "@/utils/mapping";
-import { BsFacebook, BsInstagram, BsGithub, BsGit } from "react-icons/bs";
+import { useDisclosure } from "@chakra-ui/react";
+
 import JoinModal from "@/components/HomePage/JoinModal";
-import YouTube from "react-youtube";
-import TicketModal from "@/components/HomePage/TicketModal";
+
 // https://www.youtube.com/watch?v=4N55fVuxxOg
 
 import EventModal from "@/components/Modal/EventModal";
 
 function HomePage() {
-  const { events, isLoading } = useCalendarContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isTicketOpen,
-    onOpen: onTicketOpen,
-    onClose: onTicketClose,
-  } = useDisclosure();
-  const [squareSiteLink, setSquareSiteLink] = useState("");
-  const [ticketPrice, setTicketPrice] = useState("");
-  const [disclaimer, setDisclaimer] = useState("");
-  const [title, setTitle] = useState("");
-
-  const {
-    isOpen: isImageOpen,
-    onOpen: onImageOpen,
-    onClose: onImageClose,
-  } = useDisclosure();
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [muteVideo, setMuteVideo] = useState(1);
-  const opts = {
-    height: "300",
-    width: "534",
-    playerVars: {
-      autoplay: 1,
-      disablekb: 1,
-    },
-  };
-
-  const opts2 = {
-    height: "250",
-    width: "445",
-    playerVars: {
-      autoplay: 1,
-      disablekb: 1,
-    },
-  };
-
-  const opts3 = {
-    height: "214",
-    width: "381",
-    playerVars: {
-      autoplay: 1,
-      disablekb: 1,
-    },
-  };
-
-  const opts4 = {
-    height: "177",
-    width: "315",
-    playerVars: {
-      autoplay: 1,
-      disablekb: 1,
-    },
-  };
-
-  const onReady = (event: any) => {
-    event.target.mute();
-  };
 
   return (
     <div className="flex flex-col w-[100vw] text-black">

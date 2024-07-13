@@ -12,7 +12,7 @@ import Unauthenticated from "@/components/Unauthenticated";
 
 import EmailWhiteList from "@/components/Admin/EmailWhiteList";
 import CreateEvent from "@/components/Admin/CreateEvent";
-
+import jwt from "jsonwebtoken";
 export default function Admin() {
   const { data: session, status } = useSession();
 

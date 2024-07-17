@@ -24,8 +24,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           const email = user.email;
           // Email Check
           const emailExists = await axios.get(
-            // `https://razvedchik.org/api/emails/get-value`,
-            `http://localhost:3000/api/emails/get-value`,
+            `https://razvedchik.org/api/emails/get-value`,
+            // `http://localhost:3000/api/emails/get-value`,
             {
               params: { email: email },
             }

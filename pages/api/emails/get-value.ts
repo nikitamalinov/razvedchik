@@ -1,6 +1,5 @@
 import prisma from "@/lib/client";
 import { isValidToken } from "@/utils/auth";
-import { kv } from "@vercel/kv";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z, ZodError } from "zod";
 const schema = z.object({
@@ -15,9 +14,10 @@ export default async function handler(
   const isInSet = await prisma.users.findFirst({
     where: {
       email: email,
+      deleted_at: null,
     },
   });
-  console.log("IS: ", isInSet);
+
   let isAllowed = false;
   if (isInSet) {
     isAllowed = true;

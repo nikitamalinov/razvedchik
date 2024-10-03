@@ -94,7 +94,7 @@ export default function Admin() {
             events={events}
             mutate={mutate}
           />
-          <EmailWhiteList idToken={idToken} email={email} />
+          {/* <EmailWhiteList idToken={idToken} email={email} /> */}
           {/* <Photos idToken={idToken} email={email} /> */}
         </div>
       </div>

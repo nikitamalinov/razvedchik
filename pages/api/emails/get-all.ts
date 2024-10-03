@@ -1,5 +1,6 @@
+import prisma from "@/lib/client";
 import { isValidToken } from "@/utils/auth";
-import { kv } from "@vercel/kv";
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { z, ZodError } from "zod";
 const schema = z.object({
@@ -14,7 +15,16 @@ export default async function handler(
   if (!isValidToken(email, idToken)) {
     return res.status(405).json({ message: "Invalid token" });
   }
-  const emails = await kv.smembers("emailWhiteList");
+
+  const emails = await prisma.users.findMany({
+    where: {
+      deleted_at: null,
+    },
+    select: {
+      email: true,
+    },
+  });
   emails.sort();
+
   return res.status(200).json(emails);
 }

@@ -1,3 +1,4 @@
+import prisma from "@/lib/client";
 import { isValidToken } from "@/utils/auth";
 import { kv } from "@vercel/kv";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,10 +11,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { email } = schema.parse(req.query);
-  const isInSet = await kv.sismember("emailWhiteList", email);
+
+  const isInSet = await prisma.users.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  console.log("IS: ", isInSet);
   let isAllowed = false;
-  if (isInSet === 1) {
+  if (isInSet) {
     isAllowed = true;
   }
+
   return res.status(200).json({ isAllowed: isAllowed });
 }
